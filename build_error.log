@@ -1,0 +1,52 @@
+﻿[33mΓ¥»[39m Building...
+[32mΓ£ö[39m Building...
+[1mInitial chunk files[22m  [2m | [22m[1mNames[22m        [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mmain-GPMUU7EM.js[39m     [2m | [22m[2mmain[22m         [2m | [22m[36m250.34 kB[39m[2m | [22m               [36m66.78 kB[39m
+[32mpolyfills-FFHMD2TL.js[39m[2m | [22m[2mpolyfills[22m    [2m | [22m [36m34.52 kB[39m[2m | [22m               [36m11.28 kB[39m
+[32mstyles-3AHAQXR3.css[39m  [2m | [22m[2mstyles[22m       [2m | [22m [36m11.08 kB[39m[2m | [22m              [36m802 bytes[39m
+
+[1m [22m                    [2m | [22m[1mInitial total[22m[2m | [22m[1m295.94 kB[22m[2m | [22m               [1m78.86 kB[22m
+
+Application bundle generation failed. [5.788 seconds]
+
+node.exe : [1m[33m[33mΓû▓ 
+[43;33m[[43;30mWARNING[43;
+33m][0m [1msrc/app/componen
+ts/image-upload/image-upload.
+component.scss exceeded 
+maximum budget. Budget 2.05 
+kB was not met by 438 bytes 
+with a total of 2.49 kB.[0m
+At E:\Software\NodeJS\npx.ps1
+:29 char:3
++   & $NODE_EXE $NPX_CLI_JS 
+$args
++   
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: ([1m[3  
+  3m[33mΓ...of 2.49 kB.[   
+ 0m:String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+
+
+[33mΓû▓ [43;33m[[43;30mWAR
+NING[43;33m][0m [1msrc/app
+/app.component.scss exceeded 
+maximum budget. Budget 2.05 
+kB was not met by 2.80 kB 
+with a total of 4.85 kB.[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41
+;97mERROR[41;31m][0m [1msr
+c/app/app.component.scss 
+exceeded maximum budget. 
+Budget 4.10 kB was not met 
+by 752 bytes with a total of 
+4.85 kB.[0m
+
+[39m[22m
