@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { PredictionService } from './services/prediction.service';
@@ -17,7 +18,7 @@ enum AppState {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ImageUploadComponent],
+  imports: [CommonModule, ReactiveFormsModule, ImageUploadComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -34,12 +35,27 @@ export class AppComponent implements OnDestroy {
   
   result: PredictionResponse | null = null;
   
+  patientForm: FormGroup;
+  
   private sub?: Subscription;
 
-  constructor(private predictionService: PredictionService) {}
+  constructor(private predictionService: PredictionService, private fb: FormBuilder) {
+    this.patientForm = this.fb.group({
+      name: [''],
+      age: [null, [Validators.min(0), Validators.max(120)]],
+      email: ['', [Validators.email]],
+      technician: ['']
+    });
+  }
 
   onAnalyze(file: File) {
-    this.resetState();
+    // If form is invalid, we return and mark fields to show errors.
+    if (this.patientForm.invalid) {
+       Object.values(this.patientForm.controls).forEach(c => c.markAsTouched());
+       return;
+    }
+
+    this.resetStateKeepForm();
     
     this.originalFile = file;
     const reader = new FileReader();
@@ -53,7 +69,15 @@ export class AppComponent implements OnDestroy {
     this.state = AppState.ANALYZING;
     this.errorMessage = '';
 
-    this.sub = this.predictionService.analyzeImage(file).subscribe({
+    const pInfo = this.patientForm.value;
+    const patientInfo = {
+      name: pInfo.name,
+      age: pInfo.age,
+      email: pInfo.email,
+      technician: pInfo.technician
+    };
+
+    this.sub = this.predictionService.analyzeImage(file, patientInfo).subscribe({
       next: (response) => {
         this.result = response;
         this.state = AppState.SUCCESS;
@@ -104,7 +128,7 @@ export class AppComponent implements OnDestroy {
     document.body.removeChild(a);
   }
 
-  resetState() {
+  resetStateKeepForm() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
@@ -115,8 +139,13 @@ export class AppComponent implements OnDestroy {
     this.state = AppState.INITIAL;
   }
 
+  resetState() {
+    this.resetStateKeepForm();
+    this.patientForm.reset();
+  }
+
   tryAgain() {
-    this.resetState();
+    this.resetStateKeepForm();
   }
   
   getCellDistributionArray() {

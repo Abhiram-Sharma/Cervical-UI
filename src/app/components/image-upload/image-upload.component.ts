@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ImageUploadComponent {
   @Input() isLoading = false;
+  @Input() disabled = false;
   @Output() analyze = new EventEmitter<File>();
 
   selectedFile: File | null = null;

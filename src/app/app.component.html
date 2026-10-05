@@ -4,7 +4,10 @@
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
       </svg>
-      <h1>Cervical Cellular Analysis</h1>
+      <div class="title-wrapper">
+        <h1>AI-Assisted Cervical Cancer Screening</h1>
+        <span class="subtitle">Academic Research & Demonstration System</span>
+      </div>
     </div>
   </div>
 </header>
@@ -12,10 +15,50 @@
 <main class="container main-content">
   <!-- Upload / Initial State -->
   <section class="upload-section" *ngIf="state === AppState.INITIAL || state === AppState.ANALYZING || state === AppState.ERROR">
-    <app-image-upload 
-      [isLoading]="state === AppState.ANALYZING"
-      (analyze)="onAnalyze($event)">
-    </app-image-upload>
+    
+    <div class="patient-form-card" [formGroup]="patientForm">
+      <div class="card-header">
+        <h2>Patient Information</h2>
+        <span class="optional-badge">All fields optional</span>
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Patient Name</label>
+          <input id="name" type="text" formControlName="name" placeholder="Enter patient name">
+        </div>
+        
+        <div class="form-group">
+          <label for="age">Patient Age</label>
+          <input id="age" type="number" formControlName="age" placeholder="e.g., 45" min="0" max="120">
+          <span class="error-msg" *ngIf="patientForm.get('age')?.invalid && patientForm.get('age')?.touched">
+            Please enter a reasonable age between 0 and 120.
+          </span>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Patient Email</label>
+          <input id="email" type="email" formControlName="email" placeholder="patient@example.com">
+          <span class="error-msg" *ngIf="patientForm.get('email')?.invalid && patientForm.get('email')?.touched">
+            Please enter a valid email address.
+          </span>
+        </div>
+        
+        <div class="form-group">
+          <label for="technician">Technician / Examiner Name</label>
+          <input id="technician" type="text" formControlName="technician" placeholder="Enter examiner name">
+        </div>
+      </div>
+    </div>
+
+    <div class="screening-input-section">
+      <h2>Screening Input</h2>
+      <app-image-upload 
+        [isLoading]="state === AppState.ANALYZING"
+        [disabled]="patientForm.invalid"
+        (analyze)="onAnalyze($event)">
+      </app-image-upload>
+    </div>
 
     <!-- Error State -->
     <div class="error-banner" *ngIf="state === AppState.ERROR">
@@ -23,7 +66,7 @@
         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
         <p>{{ errorMessage }}</p>
       </div>
-      <button class="btn-text" (click)="resetState()">Clear</button>
+      <button class="btn-text" (click)="tryAgain()">Clear</button>
     </div>
 
     <!-- Loading State Message -->
@@ -36,19 +79,19 @@
   <!-- Result Dashboard -->
   <section class="dashboard" *ngIf="state === AppState.SUCCESS && result">
     <div class="dashboard-header">
-      <h2>Analysis Results</h2>
-      <button class="btn btn-secondary" (click)="resetState()">Analyze Another Image</button>
+      <h2>Screening Results</h2>
+      <button class="btn btn-secondary" (click)="resetState()">Screen Another Image</button>
     </div>
 
     <div class="dashboard-grid">
       
       <!-- Prediction Summary Card -->
       <div class="card prediction-card" [ngClass]="result.prediction.label.toLowerCase()">
-        <h3>Prediction</h3>
+        <h3>AI Prediction</h3>
         <div class="prediction-value">{{ result.prediction.label }}</div>
         
         <div class="confidence">
-          <span class="label">Confidence</span>
+          <span class="label">Prediction Confidence</span>
           <span class="value">{{ result.prediction.confidence * 100 | number:'1.2-2' }}%</span>
         </div>
       </div>
@@ -82,7 +125,7 @@
           <div class="image-box">
             <h4>Analyzed Image</h4>
             <div class="img-wrapper">
-              <img [src]="result.result_image" alt="AI Analysis Result" />
+              <img [src]="result.result_image" alt="AI Assessment Result" />
             </div>
           </div>
         </div>
@@ -107,3 +150,28 @@
     </div>
   </section>
 </main>
+
+<footer class="app-footer">
+  <div class="container footer-content">
+    <div class="footer-section disclaimer">
+      <h4>Disclaimer</h4>
+      <p>This application provides an AI-based prediction intended for research and educational purposes only. It is not a substitute for professional medical diagnosis. Please consult a qualified medical practitioner for clinical evaluation, diagnosis, and treatment decisions.</p>
+    </div>
+    
+    <div class="footer-bottom-grid">
+      <div class="footer-section team">
+        <h4>Developed by:</h4>
+        <ul>
+          <li>Abhiram Sharma (23BDS1093)</li>
+          <li>Saksham Anand (23BCE1529)</li>
+          <li>Vasu Arya (23BCE1535)</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section project-info">
+        <h4>Project Information</h4>
+        <p>Developed by Final Year students of SCOPE as part of Project 1 course at VIT Chennai, under the guidance of Dr. Suganya R.</p>
+      </div>
+    </div>
+  </div>
+</footer>

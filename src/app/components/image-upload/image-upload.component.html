@@ -32,8 +32,8 @@
       </div>
       <div class="actions">
         <button class="btn btn-secondary" (click)="removeImage()" [disabled]="isLoading">Change Image</button>
-        <button class="btn btn-primary" (click)="analyzeImage()" [disabled]="isLoading">
-          <span *ngIf="!isLoading">Analyze Image</span>
+        <button class="btn btn-primary" (click)="analyzeImage()" [disabled]="isLoading || disabled">
+          <span *ngIf="!isLoading">Analyze / Screen</span>
           <span *ngIf="isLoading" class="loader"></span>
         </button>
       </div>
